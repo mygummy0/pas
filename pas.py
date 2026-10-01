@@ -2,13 +2,21 @@ import os
 import sys
 import time
 from PyQt6.QtCore import QTimer, Qt
-from PyQt6.QtGui import QFont, QAction
+from PyQt6.QtGui import QFont, QAction, QIcon
 from PyQt6.QtWidgets import QApplication, QLabel, QMenu, QVBoxLayout, QWidget
 from pynput import keyboard, mouse
 import psutil
 import pygetwindow as gw
 
 os.environ['QT_LOGGING_RULES'] = 'qt.qpa.window=false'
+
+# PyInstaller로 묶었을 때와 일반 실행일 때 모두 아이콘/파일 경로를 찾는 함수
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 # 이번 1초 동안 입력이 있었는지 체크하는 전역 플래그
 has_input_in_current_second = False
@@ -52,6 +60,11 @@ class FloatingTimer(QWidget):
             Qt.WindowType.Tool
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+
+        # --- 프로그램 창 아이콘 적용 ---
+        icon_path = resource_path("icon.ico")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)

@@ -27,10 +27,12 @@ jobs:
 
     - name: Build with PyInstaller (Windows/Mac)
       run: |
-        pyinstaller --noconsole --onefile pas.py
+        pyinstaller --noconsole --onefile --icon=icon.ico --add-data "icon.ico${{ runner.os == 'Windows' && ';' || ':' }}." pas.py
 
     - name: Upload build results
       uses: actions/upload-artifact@v4
       with:
         name: timer-app-${{ matrix.os }}
         path: dist/
+        - name: Build with PyInstaller (Windows/Mac)
+      
