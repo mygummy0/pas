@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 from PyQt6.QtCore import QTimer, Qt
