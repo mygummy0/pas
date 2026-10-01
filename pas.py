@@ -54,10 +54,10 @@ class FloatingTimer(QWidget):
         self.keyboard_listener.start()
 
     def initUI(self):
+        # 💡 Mac에서 다른 앱 클릭 시 창이 숨겨지는 현상을 막기 위해 Tool 속성 제거
         self.setWindowFlags(
             Qt.WindowType.WindowStaysOnTopHint |
-            Qt.WindowType.FramelessWindowHint |
-            Qt.WindowType.Tool
+            Qt.WindowType.FramelessWindowHint
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
 
@@ -82,9 +82,9 @@ class FloatingTimer(QWidget):
     def apply_font_style(self):
         self.label.setFont(QFont("Arial", self.font_point_size, QFont.Weight.Bold))
         self.label.setStyleSheet(
-            f"color: #FFCDD0; " +                               # 분홍색 텍스트
-            f"background-color: rgba(0, 0, 0, {self.bg_opacity}); " + # 투명도 조절 배경
-            f"padding: 10px; " +                                  # 안쪽 여백
+            f"color: #FFCDD0; "                               # 분홍색 텍스트
+            f"background-color: rgba(0, 0, 0, {self.bg_opacity}); " # 투명도 조절 배경
+            f"padding: 10px; "                                  # 안쪽 여백
             "border-radius: 8px;"                               # 둥근 모서리
         )
         self.adjustSize()
@@ -166,7 +166,8 @@ class FloatingTimer(QWidget):
         self.update_window_flags()
 
     def update_window_flags(self):
-        flags = Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool
+        # 💡 여기에서도 Tool 속성 제거 반영
+        flags = Qt.WindowType.FramelessWindowHint
         if self.always_on_top:
             flags |= Qt.WindowType.WindowStaysOnTopHint
         
