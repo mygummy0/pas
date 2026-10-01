@@ -33,7 +33,7 @@ jobs:
     - name: Build with PyInstaller (Mac)
       if: matrix.os == 'macos-latest'
       run: |
-        pyinstaller --noconsole --onefile --icon=icon.ico --add-data "icon.ico:." pas.py
+        pyinstaller --noconsole --onefile pas.py
 
     - name: Upload build results
       uses: actions/upload-artifact@v4
