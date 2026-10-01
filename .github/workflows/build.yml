@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest] # 윈도우와 맥 환경에서 동시에 빌드
+        os: [windows-latest, macos-latest]
 
     steps:
     - name: Checkout code
@@ -25,14 +25,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install PyQt6 pynput pygetwindow psutil pyinstaller
 
-    - name: Build with PyInstaller (Windows/Mac)
+    - name: Build with PyInstaller (Windows)
+      if: matrix.os == 'windows-latest'
       run: |
-        pyinstaller --noconsole --onefile --icon=icon.ico --add-data "icon.ico${{ runner.os == 'Windows' && ';' || ':' }}." pas.py
+        pyinstaller --noconsole --onefile --icon=icon.ico --add-data "icon.ico;." pas.py
+
+    - name: Build with PyInstaller (Mac)
+      if: matrix.os == 'macos-latest'
+      run: |
+        pyinstaller --noconsole --onefile --icon=icon.ico --add-data "icon.ico:." pas.py
 
     - name: Upload build results
       uses: actions/upload-artifact@v4
       with:
         name: timer-app-${{ matrix.os }}
         path: dist/
-        - name: Build with PyInstaller (Windows/Mac)
-      
